@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text("name").notNullable()
     table.text("description")
     table.timestamp("date_time").defaultTo(knex.fn.now()).notNullable()
-    table.boolean("is_within_diet").notNullable() // true if the meal is within the diet, false otherwise
+    table.boolean("is_within_diet").notNullable()
     table.timestamp("created_at").defaultTo(knex.fn.now()).notNullable()
     table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable()
   })
