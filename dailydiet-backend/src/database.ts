@@ -1,8 +1,6 @@
 import { knex as setupKnex, Knex } from "knex"
 import { env } from "./env"
 
-console.log(process.env)
-
 if (!process.env.DATABASE_URL) {
   throw new Error("Database URL not found")
 }
