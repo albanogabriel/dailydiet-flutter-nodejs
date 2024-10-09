@@ -1,7 +1,16 @@
+
+// TYPE NAME(PARAMS){}
+
 void main() {
-  printHelloWorld(message: 'Deu certo !');
+  var minhaClasse = MinhaClasse();
+  printHelloWorld(message: minhaClasse.message);
 }
 
-void printHelloWorld({String message}){
-  print(message);
+void printHelloWorld({required String message}){
+  print(message.replaceAll('DEU', 'NAO DEU'));
+}
+
+// class NomeDaClasse
+class MinhaClasse{
+  var message = 'DEU CERTO';
 }
