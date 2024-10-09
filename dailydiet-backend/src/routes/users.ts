@@ -40,33 +40,6 @@ export async function usersRoutes(app: FastifyInstance) {
     }
   })
 
-  // delete user
-  app.delete(
-    "/:id",
-    {
-      preValidation: [checkTokenExists],
-    },
-    async (request, reply) => {
-      const getTransactionsParamsSchema = z.object({
-        id: z.string().uuid(),
-      })
-
-      const { id } = getTransactionsParamsSchema.parse(request.params)
-
-      const deletedRow = await knex("users").where("id", id).del()
-
-      if (deletedRow === 0) {
-        return reply.status(404).send({
-          message: "Error to delete User - User not found", // Ajustei a mensagem
-        })
-      }
-
-      return reply.status(200).send({
-        message: "User sucessfull deleted",
-      })
-    }
-  )
-
   // Auth user
   app.post("/login", async (request, reply) => {
     const loginSchema = z.object({
@@ -103,15 +76,77 @@ export async function usersRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get("/", async (request, reply) => {
-    try {
-      const users = await knex("users").select("*") // Seleciona todos os campos
-      // const users = await knex("users").select("id", "email", "created_at", "updated_at") // selecionar tudo menos o password
+  // GET ALL USERS
+  app.get(
+    "/",
+    {
+      preValidation: [checkTokenExists],
+    },
+    async (request, reply) => {
+      try {
+        const users = await knex("users").select("*") // Seleciona todos os campos
+        // const users = await knex("users").select("id", "email", "created_at", "updated_at") // selecionar tudo menos o password
 
-      return reply.status(200).send(users)
-    } catch (error) {
-      console.log(error)
-      return reply.status(500).send({ message: "Failed to retrieve users" })
+        return reply.status(200).send(users)
+      } catch (error) {
+        console.log(error)
+        return reply.status(500).send({ message: "Failed to retrieve users" })
+      }
     }
-  })
+  )
+
+  // GET USER BY ID
+  app.get(
+    "/:id",
+    { preValidation: [checkTokenExists] },
+    async (request, reply) => {
+      try {
+        const getUserParamsSchema = z.object({
+          id: z.string().uuid(),
+        })
+
+        const { id } = getUserParamsSchema.parse(request.params)
+
+        // Query the user by ID
+        const user = await knex("users").select("*").where({ id }).first()
+
+        if (!user) {
+          return reply.status(404).send({ message: "Error at find user" })
+        }
+
+        return reply.status(200).send({
+          user,
+        })
+      } catch (error) {
+        return reply.status(500).send({ message: "Internal server error" })
+      }
+    }
+  )
+
+  // delete user
+  app.delete(
+    "/:id",
+    {
+      preValidation: [checkTokenExists],
+    },
+    async (request, reply) => {
+      const getUserParamsSchema = z.object({
+        id: z.string().uuid(),
+      })
+
+      const { id } = getUserParamsSchema.parse(request.params)
+
+      const deletedRow = await knex("users").where("id", id).del()
+
+      if (deletedRow === 0) {
+        return reply.status(404).send({
+          message: "Error to delete User - User not found", // Ajustei a mensagem
+        })
+      }
+
+      return reply.status(200).send({
+        message: "User sucessfull deleted",
+      })
+    }
+  )
 }
