@@ -49,6 +49,34 @@ export async function mealsRoutes(app: FastifyInstance) {
     }
   )
 
+  app.delete(
+    "/:id",
+    { preValidation: [checkTokenExists] },
+    async (request, reply) => {
+      try {
+        const getUserParams = z.object({
+          id: z.string().uuid(),
+        })
+
+        const { id } = getUserParams.parse(request.params)
+
+        const deletedRow = await knex("meals").where("id", id).del()
+
+        if (deletedRow === 0) {
+          return reply.status(404).send({
+            message: "Error to delete User - User not found",
+          })
+        }
+
+        return reply.status(200).send({
+          message: "Meal sucessfull deleted",
+        })
+      } catch (error) {
+        return reply.status(500).send({ message: "Failed to delete a meal" })
+      }
+    }
+  )
+
   app.get(
     "/",
     { preValidation: [checkTokenExists] },
