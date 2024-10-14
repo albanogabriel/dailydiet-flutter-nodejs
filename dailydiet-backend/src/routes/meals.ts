@@ -1,13 +1,9 @@
 import { FastifyInstance } from "fastify"
 import { knex } from "../database"
-import {
-  checkTokenExists,
-  CustomUserJwtPayload,
-} from "../middlewares/check-token-exists"
+import { checkTokenExists } from "../middlewares/check-token-exists"
 import { z } from "zod"
 import { randomUUID } from "node:crypto"
-import { request } from "node:http"
-import { permission } from "node:process"
+import { CustomUserJwtPayload } from "../@types/custom-user-jwt-payload"
 
 export async function mealsRoutes(app: FastifyInstance) {
   // POST / Create Meal
@@ -205,6 +201,34 @@ export async function mealsRoutes(app: FastifyInstance) {
         console.log(error)
         return reply.status(500).send({ message: "Failed to update meal" })
       }
+    }
+  )
+
+  // GET MEAL BY ID
+  app.get(
+    "/:id",
+    {
+      preValidation: [checkTokenExists],
+    },
+    async (request, reply) => {
+      const getMealIdParamsSchema = z.object({
+        id: z.string().uuid(),
+      })
+
+      const { id } = getMealIdParamsSchema.parse(request.params)
+
+      const findMealById = await knex("meals").where("id", id).first()
+
+      if (!findMealById) {
+        return reply.status(404).send({
+          message: "Meal not found", // Updated the message to reflect "meal"
+        })
+      }
+
+      return reply.status(200).send({
+        message: "Meal found successfully", // Success message for finding a meal
+        findMealById,
+      })
     }
   )
 }

@@ -1,10 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { app } from "../app"
-
-export interface CustomUserJwtPayload {
-  id: string
-  email: string
-}
+import { CustomUserJwtPayload } from "../@types/custom-user-jwt-payload"
 
 export async function checkTokenExists(
   request: FastifyRequest,

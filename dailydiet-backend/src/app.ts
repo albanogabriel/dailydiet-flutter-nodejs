@@ -3,6 +3,7 @@ import { usersRoutes } from "./routes/users"
 import jwt from "@fastify/jwt"
 import { authRoutes } from "./routes/auth"
 import { mealsRoutes } from "./routes/meals"
+import { SummaryRoutes } from "./routes/summary"
 
 export const app = fastify()
 
@@ -20,4 +21,8 @@ app.register(authRoutes, {
 
 app.register(mealsRoutes, {
   prefix: "meals",
+})
+
+app.register(SummaryRoutes, {
+  prefix: "summary",
 })
