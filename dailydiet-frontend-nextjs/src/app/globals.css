@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.light {
+  --background: 245, 245, 245;
+  --foreground: 0, 0, 0;
+
+  background: rgba(var(--background));
+}
+
+.dark {
+  --background: 0, 0, 0;
+  --foreground: 245, 245, 245;
+
+  background: rgba(var(--background));
+}
+
+body {
+  background: rgba(var(--background));
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: 0, 0, 0;
+      --foreground: 245, 245, 245;
+    }
+  }
+}
