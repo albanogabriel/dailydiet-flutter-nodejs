@@ -1,32 +1,42 @@
 "use client"
-import { useState } from "react"
 import { useTheme } from "../providers/theme-provider"
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useAuth } from "../providers/auth-provider"
 
 export default function Login() {
+  const { login, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const authSchema = z.object({
+    email: z
+      .string()
+      .min(1, "Digite um e-mail válido")
+      .email("E-mail obrigatório"),
+    password: z.string().min(1, "Senha é obrigatória"),
+  })
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  type AuthSchema = z.infer<typeof authSchema>
 
-    const response = await fetch("http://localhost:3333/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<AuthSchema>({
+    resolver: zodResolver(authSchema),
+  })
 
-    if (response.ok) {
-      const data = await response.json()
-      console.log("data", data)
+  const handleLogin = async ({ email, password }: AuthSchema) => {
+    try {
+      await login(email, password)
+    } catch (error) {
+      console.error("Login failed:", error)
     }
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleSubmit(handleLogin)}>
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-4">
           <label htmlFor="theme">Theme:</label>
@@ -50,8 +60,7 @@ export default function Login() {
             type="email"
             placeholder="albanogabriel@gmail.com"
             className="rounded-md px-2 py-1 text-black md:w-[300px]"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            {...register("email")}
           />
         </div>
 
@@ -62,8 +71,7 @@ export default function Login() {
             id="password"
             className="rounded-md px-2 py-1 md:w-[300px]"
             placeholder="@!123asd"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            {...register("password")}
           />
         </div>
 
