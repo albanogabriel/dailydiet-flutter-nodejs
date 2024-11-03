@@ -35,15 +35,17 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
   const applyTheme = (newTheme: string) => {
     document.body.classList.remove("light", "dark")
 
-    if (newTheme !== "system") {
-      document.body.classList.add(newTheme)
-      localStorage.setItem("theme", newTheme)
-    } else {
+    if (newTheme === "system") {
       const systemPrefersDark = window.matchMedia(
         "(prefers-color-scheme: dark)",
       ).matches
       document.body.classList.add(systemPrefersDark ? "dark" : "light")
       localStorage.setItem("theme", "system")
+    }
+
+    if (newTheme !== "system") {
+      document.body.classList.add(newTheme)
+      localStorage.setItem("theme", newTheme)
     }
   }
 
