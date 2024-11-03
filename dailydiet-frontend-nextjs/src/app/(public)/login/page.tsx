@@ -1,12 +1,12 @@
 "use client"
-import { useTheme } from "../providers/theme-provider"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useAuth } from "../providers/auth-provider"
+import { useAuth } from "@/app/providers/auth-provider"
+import { useTheme } from "@/app/providers/theme-provider"
 
 export default function Login() {
-  const { login, logout } = useAuth()
+  const { login } = useAuth()
   const { theme, toggleTheme } = useTheme()
 
   const authSchema = z.object({
@@ -62,6 +62,9 @@ export default function Login() {
             className="rounded-md px-2 py-1 text-black md:w-[300px]"
             {...register("email")}
           />
+          {errors.email && (
+            <span className="text-red-500">{errors.email.message}</span>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
@@ -73,6 +76,9 @@ export default function Login() {
             placeholder="@!123asd"
             {...register("password")}
           />
+          {errors.password && (
+            <span className="text-red-500">{errors.password.message}</span>
+          )}
         </div>
 
         <button type="submit" className="rounded-md bg-white p-2 text-black">
