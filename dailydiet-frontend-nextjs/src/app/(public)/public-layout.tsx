@@ -1,10 +1,14 @@
 // app/components/PublicLayout.tsx
 import { ReactNode } from "react"
+import { ToggleThemeButton } from "../_components/toggle-theme-button"
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="public-layout">
-      <main>{children}</main>
-    </div>
+    <main>
+      <div className="flex w-full justify-end p-4">
+        <ToggleThemeButton />
+      </div>
+      {children}
+    </main>
   )
 }

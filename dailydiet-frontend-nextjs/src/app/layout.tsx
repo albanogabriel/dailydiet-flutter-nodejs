@@ -31,7 +31,7 @@ export default function RootLayout({
       <AuthProvider>
         <ThemeProvider>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col items-center justify-center p-4 text-foreground antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col text-foreground antialiased`}
           >
             <LayoutController>{children}</LayoutController>
           </body>
