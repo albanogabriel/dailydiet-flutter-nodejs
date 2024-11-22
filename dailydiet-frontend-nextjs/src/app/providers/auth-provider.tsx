@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 import { clientAxios } from "@/lib/axios"
+import { toast } from "sonner"
 
 interface AuthContextProps {
   user: string | null
@@ -43,9 +44,11 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         path: "/",
       })
       setUser("user")
+      toast.success("Successfully login")
       router.push("/home")
     } catch (error) {
       console.error("Erro no login", error)
+      toast.error("Login Failed")
     }
   }
 

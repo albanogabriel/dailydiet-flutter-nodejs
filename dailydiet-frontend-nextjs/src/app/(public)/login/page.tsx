@@ -4,9 +4,12 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/app/providers/auth-provider"
 import Image from "next/image"
+import Link from "next/link"
+import useEffectiveTheme from "@/app/hooks/useEffectiveTheme"
 
 export default function Login() {
   const { login } = useAuth()
+  const { effectiveTheme } = useEffectiveTheme()
 
   const authSchema = z.object({
     email: z
@@ -36,14 +39,14 @@ export default function Login() {
 
   return (
     <div className="container flex flex-col items-center justify-center">
-      <div className="grid max-w-[800px] grid-cols-1 justify-center gap-[32px] rounded-2xl bg-gray-100 lg:grid-cols-2 lg:gap-[0px] lg:shadow-md">
-        <aside className="flex flex-col items-center justify-center rounded-l-xl lg:gap-8 lg:bg-gray-200 lg:px-8 lg:py-36">
+      <div className="grid w-full max-w-[1100px] grid-cols-1 items-center justify-center rounded-2xl bg-base100 lg:grid-cols-2 lg:gap-[0px] lg:shadow-md">
+        <aside className="hidden flex-col items-center justify-center rounded-t-lg bg-base150 p-12 lg:flex lg:gap-8 lg:rounded-l-xl lg:rounded-r-none lg:py-36">
           <div className="flex items-center justify-center">
             <Image
               src="/barbeacue-man.svg"
               alt=""
-              width={200}
-              height={200}
+              width={160}
+              height={160}
               className="scale-[0.55] lg:scale-100"
             />
           </div>
@@ -52,11 +55,32 @@ export default function Login() {
             <p className="hidden lg:block">testing pagraph</p>
           </div>
         </aside>
-        <main className="flex flex-col items-center justify-center rounded-r-xl lg:p-8">
-          <h1 className="mb-8 font-bold">Faça o seu Login</h1>
+        <main className="flex flex-col items-center justify-center gap-8 rounded-xl bg-base100 px-8 py-14 lg:gap-4 lg:rounded-r-xl lg:p-8">
+          <Image
+            src={
+              effectiveTheme === "dark"
+                ? "/daily-diet-white.svg"
+                : "/daily-diet-black.svg"
+            }
+            width={70}
+            height={70}
+            alt=""
+            className="hidden lg:block"
+          />
+
+          <div className="flex items-center justify-center">
+            <Image
+              src="/barbeacue-man.svg"
+              alt=""
+              width={160}
+              height={160}
+              className="scale-[0.55] lg:hidden lg:scale-100"
+            />
+          </div>
+          <h1 className="mb-8 font-bold">Olá! Faça o seu Login</h1>
           <form
             onSubmit={handleSubmit(handleLogin)}
-            className="flex w-full flex-col gap-10 lg:w-[400px] lg:justify-center lg:px-8"
+            className="flex w-full max-w-[400px] flex-col gap-10 lg:justify-center lg:px-8"
           >
             <div className="flex flex-col gap-5">
               <div className="flex w-full flex-wrap gap-2">
@@ -97,6 +121,13 @@ export default function Login() {
               Login
             </button>
           </form>
+
+          <div className="text-sm">
+            Novo por aqui ?{" "}
+            <Link href={"/register"} className="text-hyperlink">
+              Registre-se
+            </Link>
+          </div>
         </main>
       </div>
     </div>

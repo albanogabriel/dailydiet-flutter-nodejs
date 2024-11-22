@@ -6,6 +6,7 @@ import type { NextRequest } from "next/server"
 export const APP_ROUTES = {
   private: {
     home: "/home",
+    overview: "/overview",
   },
   public: {
     login: "/login",

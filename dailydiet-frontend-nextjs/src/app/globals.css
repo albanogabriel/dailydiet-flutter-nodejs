@@ -2,9 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --hyperlink: 78, 122, 255;
+  --greenLight: 229, 240, 219;
+  --greenMid: 203, 228, 180;
+  --greenDark: 99, 147, 57;
+}
+
 .light {
   --background: 245, 245, 245;
   --foreground: 0, 0, 0;
+
+  --base900: 27, 29, 30;
+  --base800: 51, 54, 56;
+  --base700: 92, 98, 101;
+  --base300: 185, 187, 188;
+  --base200: 221, 222, 223;
+  --base150: 239, 240, 240;
+  --base100: 250, 250, 250;
 
   background: rgba(var(--background));
 }
@@ -12,6 +27,14 @@
 .dark {
   --background: 0, 0, 0;
   --foreground: 245, 245, 245;
+
+  --base900: 250, 250, 250;
+  --base800: 239, 240, 240;
+  --base700: 221, 222, 223;
+  --base300: 185, 187, 188;
+  --base200: 92, 98, 101;
+  --base150: 51, 54, 56;
+  --base100: 27, 29, 30;
 
   background: rgba(var(--background));
 }
@@ -23,6 +46,14 @@ body {
     :root {
       --background: 0, 0, 0;
       --foreground: 245, 245, 245;
+
+      --base900: 250, 250, 250;
+      --base800: 239, 240, 240;
+      --base700: 221, 222, 223;
+      --base300: 185, 187, 188;
+      --base200: 92, 98, 101;
+      --base150: 51, 54, 56;
+      --base100: 27, 29, 30;
     }
   }
 }

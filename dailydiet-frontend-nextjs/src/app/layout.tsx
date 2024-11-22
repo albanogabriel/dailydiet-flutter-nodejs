@@ -1,9 +1,16 @@
+import { Nunito_Sans } from "next/font/google"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import "./globals.css"
-import ThemeProvider from "./providers/theme-provider"
-import AuthProvider from "./providers/auth-provider"
 import LayoutController from "./layout-controller"
+import { Toaster } from "sonner"
+import CombinedProviders from "./providers/combined-providers"
+
+const nunitoSans = Nunito_Sans({
+  variable: "--font-nunito-sans",
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+})
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,15 +35,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-        <ThemeProvider>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col text-foreground antialiased`}
-          >
+      <CombinedProviders>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} flex min-h-screen flex-col font-nunitoSans text-foreground antialiased`}
+        >
+          <Toaster richColors />
+
+          <div className="min-h-screen">
             <LayoutController>{children}</LayoutController>
-          </body>
-        </ThemeProvider>
-      </AuthProvider>
+          </div>
+
+          {/* <footer>teste</footer> */}
+        </body>
+      </CombinedProviders>
     </html>
   )
 }
