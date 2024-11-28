@@ -271,16 +271,16 @@ export async function mealsRoutes(app: FastifyInstance) {
       // Recupera todas as refeições do usuário
       const meals = await knex('meals').where('user_id', userId).select('*');
 
-      // Agrupa as refeições por data e ordena ao mesmo tempo
       const groupedMeals = meals.reduce((acc: GroupedMealArray[], meal: Meal) => {
         const date = new Date(meal.date_time);
-        const formattedDate = date.toLocaleDateString('pt-BR'); // Formata a data no formato 'DD/MM/YYYY'
+        const formattedDate = date.toISOString().split('T')[0]; // Formata como 'YYYY-MM-DD'
+
         const hour = date.toLocaleTimeString('pt-BR', {
           hour: '2-digit',
           minute: '2-digit',
         });
 
-        // Encontra o grupo existente ou cria um novo
+        // Encontra ou cria o grupo pelo ano
         const existingGroup = acc.find((group) => group.year === formattedDate);
 
         if (!existingGroup) {
@@ -290,39 +290,66 @@ export async function mealsRoutes(app: FastifyInstance) {
         }
 
         return acc;
-      }, [] as GroupedMealArray[]);
+      }, []);
 
-      // Ordena os grupos de refeições por data (do mais recente para o mais antigo)
-      groupedMeals.sort((a, b) => {
-        const dateA = new Date(a.year).getTime();
-        const dateB = new Date(b.year).getTime();
-        return dateB - dateA; // Ordena do mais recente para o mais antigo
-      });
+      // Ordena os grupos por ano (desc)
+      groupedMeals.sort((a, b) => new Date(b.year).getTime() - new Date(a.year).getTime());
 
-      // Ordena as refeições dentro de cada grupo por hora (do mais tarde para o mais cedo)
+      // Ordena refeições dentro de cada grupo por hora (desc)
       groupedMeals.forEach((group) => {
         group.meals.sort((a, b) => {
-          const [hourA, minuteA] = a.hour.split(':').map(Number);
-          const [hourB, minuteB] = b.hour.split(':').map(Number);
-
-          if (hourA === hourB) {
-            return minuteB - minuteA; // Se as horas forem iguais, ordena por minuto (maior primeiro)
-          }
-
-          return hourB - hourA; // Ordena pelas horas (maior primeiro)
+          const timeA = new Date(`${group.year}T${a.hour}`).getTime();
+          const timeB = new Date(`${group.year}T${b.hour}`).getTime();
+          return timeB - timeA;
         });
       });
 
       return reply.status(200).send(groupedMeals);
+    } catch (error) {
+      console.error(error);
+      return reply.status(500).send({ message: 'Failed to retrieve grouped meals' });
+    }
+  });
+
+  // Se dateB - dateA for positivo (dateB é mais recente que dateA): Isso significa que dateB deve aparecer antes de dateA no array. Portanto, dateB vai para a frente e dateA vai para trás. Isso coloca as datas mais recentes primeiro (ordem decrescente).
+  // Se dateB - dateA for negativo (dateA é mais recente que dateB): Isso significa que dateA deve vir antes de dateB. Ou seja, dateA vai para frente e dateB vai para trás. Nesse caso, a ordem será crescente.
+  // Se dateB - dateA for zero (ou seja, as duas datas são iguais): Não há troca de posição, já que o valor de ambos os elementos é o mesmo.
+
+  app.get('/stats', { preValidation: [checkTokenExists] }, async (request, reply) => {
+    try {
+      const userId = (request.user as CustomUserJwtPayload).id;
+
+      const meals = (await knex('meals').where('user_id', userId).select('*')).map((meal) => ({
+        ...meal,
+        is_within_diet: Boolean(meal.is_within_diet), // Converte para boolean
+      }));
+
+      const stats = meals.reduce(
+        (acc, meal) => {
+          if (meal.is_within_diet === true) {
+            acc.withinDiet++;
+            acc.currentStreak++;
+            acc.bestStreak = Math.max(acc.bestStreak, acc.currentStreak);
+            acc.totalMeals = meals.length;
+          } else {
+            acc.outsideDiet++;
+            acc.currentStreak = 0;
+          }
+          return acc;
+        },
+        {
+          withinDiet: 0,
+          outsideDiet: 0,
+          currentStreak: 0,
+          bestStreak: 0,
+          totalMeals: 0,
+        }
+      );
+
+      return reply.status(200).send(stats);
     } catch (error) {
       console.log(error);
       return reply.status(500).send({ message: 'Failed to retrieve grouped meals' });
     }
   });
 }
-
-// Se dateB - dateA for positivo (dateB é mais recente que dateA): Isso significa que dateB deve aparecer antes de dateA no array. Portanto, dateB vai para a frente e dateA vai para trás. Isso coloca as datas mais recentes primeiro (ordem decrescente).
-
-// Se dateB - dateA for negativo (dateA é mais recente que dateB): Isso significa que dateA deve vir antes de dateB. Ou seja, dateA vai para frente e dateB vai para trás. Nesse caso, a ordem será crescente.
-
-// Se dateB - dateA for zero (ou seja, as duas datas são iguais): Não há troca de posição, já que o valor de ambos os elementos é o mesmo.
