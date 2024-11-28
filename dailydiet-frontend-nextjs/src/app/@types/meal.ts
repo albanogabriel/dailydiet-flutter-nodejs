@@ -4,7 +4,7 @@ export interface Meal {
   name: string
   description: string
   date_time: number
-  is_within_diet: boolean
+  is_within_diet: number
   created_at: number
   updated_at: number
 }
