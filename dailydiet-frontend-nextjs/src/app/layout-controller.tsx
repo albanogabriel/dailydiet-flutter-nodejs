@@ -1,10 +1,11 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { ReactNode } from "react"
+
 import { APP_ROUTES } from "@/middleware"
 import PrivateLayout from "./(private)/private-layout"
 import PublicLayout from "./(public)/public-layout"
+import { ReactNode } from "react"
 
 export default function LayoutController({
   children,
@@ -13,13 +14,23 @@ export default function LayoutController({
 }) {
   const pathname = usePathname()
 
-  // Verifica se a rota é privada
-  const isPrivateRoute = Object.values(APP_ROUTES.private).includes(pathname)
+  const isPrivateRoute = Object.values(APP_ROUTES.private).some((route) => {
+    if (route.includes("/:")) {
+      // Trata rotas dinâmicas, como /meal/:id
+      const baseRoute = route.split("/:")[0]
+      return pathname.startsWith(baseRoute)
+    }
+    return pathname === route
+  })
 
-  // Escolhe o layout com base no tipo de rota
-  return isPrivateRoute ? (
-    <PrivateLayout>{children}</PrivateLayout>
-  ) : (
-    <PublicLayout>{children}</PublicLayout>
+  return (
+    // Escolhe o layout com base no tipo de rota
+    <>
+      {isPrivateRoute ? (
+        <PrivateLayout>{children}</PrivateLayout>
+      ) : (
+        <PublicLayout>{children}</PublicLayout>
+      )}
+    </>
   )
 }
