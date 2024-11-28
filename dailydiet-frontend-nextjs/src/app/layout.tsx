@@ -30,22 +30,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <CombinedProviders>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} flex min-h-screen flex-col font-nunitoSans text-foreground antialiased`}
+          className={`flex h-full flex-col ${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} font-nunitoSans text-foreground antialiased`}
         >
           <Toaster richColors />
-
-          <div className="min-h-screen">
-            <LayoutController>{children}</LayoutController>
-          </div>
-
-          {/* <footer>teste</footer> */}
+          <LayoutController>{children}</LayoutController>
         </body>
       </CombinedProviders>
     </html>
