@@ -25,11 +25,12 @@ export default function EditMealModal({
     watch,
   } = useForm<EditMealSchemaType>({
     resolver: zodResolver(editMealSchema),
+    defaultValues: {
+      is_within_diet: Boolean(data.is_within_diet),
+    },
   })
 
   const isWithinDiet = watch("is_within_diet")
-
-  //
 
   const fetchEditMeal = async (editData: EditMealSchemaType) => {
     try {
@@ -78,6 +79,8 @@ export default function EditMealModal({
     } catch (error) {
       console.error("Erro ao atualizar refeição:", error)
     }
+
+    window.location.reload()
   }
 
   return (
@@ -109,6 +112,7 @@ export default function EditMealModal({
                 Nome
               </label>
               <input
+                placeholder={data.name}
                 {...register("name")}
                 className="w-full rounded-md border border-base200 p-2"
               />
@@ -125,6 +129,7 @@ export default function EditMealModal({
                 Descrição
               </label>
               <textarea
+                placeholder={data.description}
                 {...register("description")}
                 className="h-24 w-full resize-none rounded-md border border-base200 p-2"
               />
