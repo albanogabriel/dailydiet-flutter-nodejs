@@ -6,6 +6,7 @@ import { Pencil, Trash } from "lucide-react"
 import { useState, useEffect } from "react"
 import DeleteMealModal from "./delete-meal-modal"
 import EditMealModal from "./edit-meal-modal"
+import { format } from "date-fns"
 
 interface Params {
   params: {
@@ -51,13 +52,16 @@ export default function MealById({ params }: Params) {
                 {meal.name.charAt(0).toUpperCase() + meal.name.slice(1)}
               </h3>
               <p className="text-xl text-base700">
-                {meal.name.charAt(0).toUpperCase() + meal.name.slice(1)}
+                {meal.description.charAt(0).toUpperCase() +
+                  meal.description.slice(1)}
               </p>
             </div>
 
             <div className="flex flex-col gap-2">
               <h3 className="text-sm font-bold">Data e hora</h3>
-              <p className="text-base text-base700">{meal.description}</p>
+              <p className="text-base text-base700">
+                {format(new Date(meal.date_time), "dd/MM/yyyy 'às' HH:mm")}
+              </p>
             </div>
 
             <div className="flex w-fit items-center gap-2 rounded-3xl bg-base150 px-4 py-2">
