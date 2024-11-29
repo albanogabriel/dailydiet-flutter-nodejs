@@ -1,7 +1,7 @@
 import { clientAxios } from "@/lib/axios"
 import axios from "axios"
 
-export const GetMealById = async (mealId: string) => {
+export const getMealById = async (mealId: string) => {
   try {
     const response = await clientAxios.get(`/meals/${mealId}`)
     return response.data.findMealById
