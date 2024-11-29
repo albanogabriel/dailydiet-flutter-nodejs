@@ -6,6 +6,7 @@ import { createMeal } from "../api/create-meal"
 import { createMealSchema, CreateMealSchemaType } from "../schemas/create-meal"
 import CreatedMealModal from "./created-meal-modal"
 import { useState } from "react"
+import { formatISO } from "date-fns"
 
 interface CreateMealModalProps {
   closeModal: () => void
@@ -29,7 +30,7 @@ export default function CreateMealModal({ closeModal }: CreateMealModalProps) {
   const onSubmit = async (data: CreateMealSchemaType) => {
     try {
       const { date, time, ...rest } = data
-      const date_time = `${date}T${time}:00`
+      const date_time = formatISO(new Date(`${date}T${time}`)) // Garante formato ISO
       console.log({ ...rest, date_time })
       const response = await createMeal({ ...rest, date_time })
 
