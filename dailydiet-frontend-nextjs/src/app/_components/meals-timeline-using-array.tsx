@@ -33,7 +33,7 @@ export default function MealsTimelineWithArray() {
       {groupedMealsByYear.map(({ year, meals }) => (
         <div key={year} className="space-y-3">
           <h2 className="text-lg font-bold text-base900">
-            {new Date(year).toLocaleDateString("pt-BR")}
+            {new Date(`${year}T00:00:00`).toLocaleDateString("pt-BR")}
           </h2>
 
           <div className="flex flex-col gap-3">
