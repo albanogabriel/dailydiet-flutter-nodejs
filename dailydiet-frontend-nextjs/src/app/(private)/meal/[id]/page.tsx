@@ -1,10 +1,11 @@
 "use client"
 
 import { Meal } from "@/app/@types/meal"
-import { GetMealById } from "@/app/api/get-meal-by-id"
+import { getMealById } from "@/app/api/get-meal-by-id"
 import { Pencil, Trash } from "lucide-react"
 import { useState, useEffect } from "react"
 import DeleteMealModal from "./delete-meal-modal"
+import EditMealModal from "./edit-meal-modal"
 
 interface Params {
   params: {
@@ -14,10 +15,11 @@ interface Params {
 
 export default function MealById({ params }: Params) {
   const [meal, setMeal] = useState<Meal | null>(null)
-  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   const fetchMealById = async () => {
-    const data = await GetMealById(params.id)
+    const data = await getMealById(params.id)
     setMeal(data)
   }
 
@@ -69,13 +71,16 @@ export default function MealById({ params }: Params) {
           </div>
 
           <div className="flex flex-col gap-4 py-2">
-            <button className="flex w-full items-center justify-center gap-2 rounded-md bg-base800 px-6 py-4 text-base150">
+            <button
+              onClick={() => setIsEditModalOpen(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-base800 px-6 py-4 text-base150"
+            >
               <Pencil size={14} />
               Editar Refeição
             </button>
 
             <button
-              onClick={() => setIsOpenModal(true)}
+              onClick={() => setIsDeleteModalOpen(true)}
               className="hover:text- flex w-full items-center justify-center gap-2 rounded-md border border-base800 bg-base100 px-6 py-4 text-base800 hover:border-red-700/70 hover:bg-red-700/80 hover:text-base100"
             >
               <Trash size={14} />
@@ -85,10 +90,18 @@ export default function MealById({ params }: Params) {
         </div>
       </div>
 
-      {isOpenModal && (
+      {isEditModalOpen && (
+        <EditMealModal
+          data={meal}
+          mealId={meal.id}
+          closeModal={() => setIsEditModalOpen(false)}
+        />
+      )}
+
+      {isDeleteModalOpen && (
         <DeleteMealModal
           mealId={meal.id}
-          closeModal={() => setIsOpenModal(false)}
+          closeModal={() => setIsDeleteModalOpen(false)}
         />
       )}
     </>
