@@ -16,8 +16,8 @@ export default function Header() {
         <Image
           src={
             effectiveTheme === "dark"
-              ? "daily-diet-white.svg"
-              : "daily-diet-black.svg"
+              ? "/daily-diet-white.svg"
+              : "/daily-diet-black.svg"
           }
           width={82}
           height={37}
