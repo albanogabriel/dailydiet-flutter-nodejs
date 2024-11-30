@@ -38,7 +38,7 @@ export default function Login() {
   }
 
   return (
-    <div className="container flex flex-col items-center justify-center">
+    <div className="container mt-10 flex flex-col items-center justify-center">
       <div className="grid w-full max-w-[1100px] grid-cols-1 items-center justify-center rounded-2xl bg-base100 lg:grid-cols-2 lg:gap-[0px] lg:shadow-md">
         <aside className="hidden flex-col items-center justify-center rounded-t-lg bg-base150 p-12 lg:flex lg:gap-8 lg:rounded-l-xl lg:rounded-r-none lg:py-36">
           <div className="flex items-center justify-center">
