@@ -42,15 +42,15 @@ This projects shows the integration between Next.js framework and with node.js. 
 
 ## Key Learnings
 
-- APP: CENTRALIZE LOGICS IN BACK-END TO GAIN PERFORMANCE ON CLIENTSIDE
-- FRONTEND: Usage of next auth middleware to organize public/private routes
-- FRONTEND: tailwind theme-oriented global css vars
-- FRONTEND: CONTEXT API to manage auth informations(token/user) and Dark and light theme: Create request functions separate from the code
-- FRONTEND: change layout dinamically using private and public paths
-- FRONTEND: hook created to get actual theme informations
-- FRONTEND: schemas to control form requests
-- BACKEND: reduce method to create meal stats(new learn: mathMax)
-- BACKEND: organize meals by year and decreasing time(usign reduce and forEach method)
+- **APP:** CENTRALIZE LOGICS IN BACK-END TO GAIN PERFORMANCE ON CLIENTSIDE
+- **FRONTEND:** Usage of next auth middleware to organize public/private routes
+- **FRONTEND:** tailwind theme-oriented global css vars
+- **FRONTEND:** CONTEXT API to manage auth informations(token/user) and Dark and light theme: Create request functions separate from the code
+- **FRONTEND:** change layout dinamically using private and public paths
+- **FRONTEND:** hook created to get actual theme informations
+- **FRONTEND:** schemas to control form requests
+- **BACKEND**: reduce method to create meal stats(new learn: mathMax)
+- **BACKEND**: organize meals by year and decreasing time(usign reduce and forEach method)
 
 ---
 
