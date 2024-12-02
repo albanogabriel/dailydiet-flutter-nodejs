@@ -1,3 +1,59 @@
+# Full-Stack Project using Next.js and Node.js (Fastify + Knex + SQL)
+
+This projects shows the integration between Next.js framework and with node.js. Fastify and knex was used to manage SQL databases
+
+## Run Project
+
+| Etapa         | Comando                |
+| ------------- | ---------------------- |
+| Clone Project | `git clone <repo-url>` |
+
+### Run Backend
+
+| Etapa             | Comando                |
+| ----------------- | ---------------------- |
+| Entrar no backend | `cd dailydiet-backend` |
+| Rodar o servidor  | `npm run dev`          |
+
+### Run Frontend
+
+| Etapa               | Comando                        |
+| ------------------- | ------------------------------ |
+| Entrar no front-end | `cd dailydiet-frontend-nextjs` |
+| Rodar o servidor    | `npm run dev`                  |
+
+## About Frontend (Next.js)
+
+- **Next**: Used Next.js as react framework
+- **Typescript**:
+- **Axios**: Manages HTTP requests between the frontend and the backend.
+- **Phosphor React**: Provides a set of customizable icons for the UI.
+- **Zod** + **React Hook Form (useForm)**: Used to manage form validation and handle uncontrolled forms efficiently.
+- **Sonner**: Toast messages
+- **Date-fns**: Control dates information
+- **Framer-Motion**: Crate micro animations
+
+## Backend (Node.js)
+
+- **Node.js**: The runtime environment used to create the REST API.
+- **Fastify**: A lightweight and fast Node.js framework for building APIs.
+- **Knex**: A SQL query builder that simplifies database queries and migrations, making it easier to work with databases in JavaScript.
+- **SQLite**: The database used in the development environment for simplicity and ease of use.
+
+## Key Learnings
+
+- APP: CENTRALIZE LOGICS IN BACK-END TO GAIN PERFORMANCE ON CLIENTSIDE
+- FRONTEND: Usage of next auth middleware to organize public/private routes
+- FRONTEND: tailwind theme-oriented global css vars
+- FRONTEND: CONTEXT API to manage auth informations(token/user) and Dark and light theme: Create request functions separate from the code
+- FRONTEND: change layout dinamically using private and public paths
+- FRONTEND: hook created to get actual theme informations
+- FRONTEND: schemas to control form requests
+- BACKEND: reduce method to create meal stats(new learn: mathMax)
+- BACKEND: organize meals by year and decreasing time(usign reduce and forEach method)
+
+---
+
 ### To-do: Regras da aplicação
 
 #### User
